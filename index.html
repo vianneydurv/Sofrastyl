@@ -210,7 +210,11 @@
     align-items:center;
     gap:10px;
     opacity:0;
-    animation:reveal 1.6s ease forwards 2.6s;
+    animation:revealCenter 1.6s ease forwards 2.6s;
+  }
+  @keyframes revealCenter{
+    from{ opacity:0; transform:translateX(-50%) translateY(10px); }
+    to{ opacity:1; transform:translateX(-50%) translateY(0); }
   }
   .hero-scroll span{
     font-size:0.68rem;
@@ -244,10 +248,15 @@
   }
 
   @media (prefers-reduced-motion: reduce){
-    .hero-logo, .hero-tagline, .hero-sub, .hero-scroll, nav{
+    .hero-logo, .hero-tagline, .hero-sub, nav{
       animation:none !important;
       opacity:1 !important;
       transform:none !important;
+    }
+    .hero-scroll{
+      animation:none !important;
+      opacity:1 !important;
+      transform:translateX(-50%) !important;
     }
     .hero-scroll .stem::after{ animation:none; }
   }
@@ -313,7 +322,8 @@
       grid-template-columns:1fr;
       gap:44px;
     }
-    .split.reverse .split-media, .split.reverse .split-text{ order:initial; }
+    .split.reverse .split-media{ order:2; }
+    .split.reverse .split-text{ order:1; }
   }
 
   .numeral{
@@ -587,6 +597,7 @@
   .contact-section{
     background:var(--paper-2);
     border-top:1px solid var(--line);
+    padding:min(5.5vw,60px) 0;
   }
   .contact-grid{
     display:grid;
@@ -599,10 +610,10 @@
   .contact-info h2{
     font-size:clamp(1.9rem, 3.2vw, 2.4rem);
     font-weight:400;
-    margin-bottom:30px;
+    margin-bottom:20px;
   }
   .contact-line{
-    padding:16px 0;
+    padding:12px 0;
     border-top:1px solid var(--line);
     font-size:0.95rem;
   }
@@ -617,18 +628,19 @@
   .contact-line a{ color:var(--ink); }
   .contact-line a:hover{ color:var(--grey); }
 
-  form{ display:flex; flex-direction:column; gap:26px; margin-top:56px; }
+  form{ display:flex; flex-direction:column; gap:18px; margin-top:32px; }
   @media (max-width:860px){
     form{ margin-top:0; }
   }
-  .field-row{ display:grid; grid-template-columns:1fr 1fr; gap:26px; }
-  @media (max-width:540px){ .field-row{ grid-template-columns:1fr; } }
+  .field-row{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:18px; }
+  @media (max-width:700px){ .field-row{ grid-template-columns:1fr 1fr; } }
+  @media (max-width:420px){ .field-row{ grid-template-columns:1fr; } }
   label{
     display:block;
     font-size:0.68rem;
     letter-spacing:0.14em;
     color:var(--grey-dim);
-    margin-bottom:10px;
+    margin-bottom:8px;
   }
   input, textarea{
     width:100%;
@@ -639,12 +651,12 @@
     font-family:'Jost', sans-serif;
     font-weight:300;
     font-size:0.95rem;
-    padding:8px 0;
+    padding:6px 0;
     outline:none;
     transition:border-color 0.3s ease;
   }
   input:focus, textarea:focus{ border-color:var(--ink); }
-  textarea{ resize:none; height:90px; }
+  textarea{ resize:none; height:64px; }
 
   .submit{
     align-self:flex-start;
@@ -862,7 +874,7 @@
     </div>
   </div>
 </section>
-<section id="contact" class="contact-section pad">
+<section id="contact" class="contact-section">
   <div class="container">
     <div class="contact-grid">
       <div class="contact-info">
@@ -894,6 +906,10 @@
             <label for="societe">Société</label>
             <input type="text" id="societe" name="societe">
           </div>
+          <div>
+            <label for="telephone">Téléphone</label>
+            <input type="tel" id="telephone" name="telephone">
+          </div>
         </div>
         <div class="field-row">
           <div>
@@ -903,12 +919,6 @@
           <div>
             <label for="ville">Ville</label>
             <input type="text" id="ville" name="ville">
-          </div>
-        </div>
-        <div class="field-row">
-          <div>
-            <label for="telephone">Téléphone</label>
-            <input type="tel" id="telephone" name="telephone">
           </div>
           <div>
             <label for="email">E-mail</label>
