@@ -112,12 +112,54 @@
   }
   .nav-links a:hover::after{ width:100%; }
 
+  .nav-toggle{
+    display:none;
+    flex-direction:column;
+    justify-content:center;
+    gap:5px;
+    width:32px;
+    height:32px;
+    background:none;
+    border:none;
+    padding:0;
+    cursor:pointer;
+    z-index:110;
+  }
+  .nav-toggle span{
+    display:block;
+    width:100%;
+    height:1px;
+    background:var(--paper);
+    transition:transform 0.3s ease, opacity 0.3s ease;
+  }
+  nav.menu-open .nav-toggle span:nth-child(1){ transform:translateY(6px) rotate(45deg); }
+  nav.menu-open .nav-toggle span:nth-child(2){ opacity:0; }
+  nav.menu-open .nav-toggle span:nth-child(3){ transform:translateY(-6px) rotate(-45deg); }
+
   @media (max-width:720px){
-    .nav-links{ display:none; }
+    .nav-toggle{ display:flex; }
+    .nav-links{
+      position:fixed;
+      inset:0;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:36px;
+      background:var(--ink);
+      font-size:1.2rem;
+      opacity:0;
+      pointer-events:none;
+      transition:opacity 0.35s ease;
+    }
+    nav.menu-open .nav-links{
+      opacity:1;
+      pointer-events:auto;
+    }
   }
 
   .hero{
     height:100vh;
+    height:100svh;
     min-height:560px;
     display:flex;
     flex-direction:column;
@@ -419,6 +461,9 @@
     text-align:center;
     white-space:nowrap;
   }
+  @media (max-width:360px){
+    .video-caption{ white-space:normal; }
+  }
   .video-caption span{
     display:block;
     font-family:'Jost', sans-serif;
@@ -517,7 +562,7 @@
   }
   .refs-grid > .refs-group:first-child{ border-left:none; padding-left:0; }
   @media (max-width:900px){
-    .refs-group{ border-left:none; padding-left:0; }
+    .refs-group{ border-left:none; padding:0; }
   }
   .refs-group h3{
     font-family:'Jost', sans-serif;
@@ -639,12 +684,15 @@
 
 <nav id="mainNav">
   <a href="index.html" class="nav-mark">SOFRASTYL</a>
-  <div class="nav-links">
+  <div class="nav-links" id="navLinks">
     <a href="#apropos">À propos</a>
     <a href="#metier">Métier</a>
     <a href="#realisations">Réalisations</a>
     <a href="#contact">Contact</a>
   </div>
+  <button class="nav-toggle" id="navToggle" aria-label="Ouvrir le menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
 
 <!-- HERO -->
@@ -890,8 +938,25 @@
 
 <script>
   const nav = document.getElementById('mainNav');
+  const navToggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+
   window.addEventListener('scroll', () => {
     nav.classList.toggle('solid', window.scrollY > 40);
+  });
+
+  navToggle.addEventListener('click', () => {
+    const isOpen = nav.classList.toggle('menu-open');
+    navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  });
+
+  navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      nav.classList.remove('menu-open');
+      navToggle.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    });
   });
 </script>
 
